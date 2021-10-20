@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>React - Generate</title>
+		<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+		<script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+	</head>
+	<body>
+		<h1>Generate</h1>
+		<div id="root"></div>
+
+		<script type="text/babel">
+
+            const SelectTypes = () => {
+                // Hur kan man skicka dessa props till andra parent komponenter 
+                const [typeChar, setTypeChar] = React.useState(true);
+                const [typeNum, setTypeNum] = React.useState(false);
+                const [typeSym, setTypeSym] = React.useState(false);
+
+                const changeChar = (e) => {
+                    let checkedState = e.target.checked;
+                    console.log('Chars : isChecked/NewState:',checkedState);
+                    setTypeChar(checkedState);
+                }
+
+                const changeNum = (e) => {
+                    let checkedState = e.target.checked;
+                    console.log('Numbers : isChecked/NewState:',checkedState);
+                    setTypeNum(checkedState);
+                }
+
+                const changeSym = (e) => {
+                    let checkedState = e.target.checked;
+                    console.log('Symbols : isChecked/NewState:',checkedState);
+                    setTypeSym(checkedState);
+                }
+
+                return(
+                    <div>
+                        <div>
+                            <label>Chars</label> 
+                            <input type={'checkbox'} id={'_char'} checked={typeChar} onChange={(e)=> changeChar(e) } />
+                        
+                            <label>Numbers</label> 
+                            <input type={'checkbox'} id={'_num'} checked={typeNum} onChange={(e)=> changeNum(e) } />
+                        
+                            <label>Symbols</label>
+                            <input type={'checkbox'} id={'_sym'} checked={typeSym} onChange={(e)=> changeSym(e) } />
+                        </div>
+                    </div>
+                ); 
+            }
+
+            const SelectLength = () => {
+                return(
+                    <div>
+                        <div> <input type={'number'} id={'_length'} /> </div>
+                    </div>
+                );
+            }
+            //- END - Child Component
+            
+            const GenerateNew = () => {
+                // Här hämtar jag värdet om jag befinner mig utanför komponenter
+                let _length = document.querySelector('#_length').value;
+                let _chars = document.querySelector('#_char').checked;
+                let _num = document.querySelector('#_num').checked;
+                let _sym = document.querySelector('#_sym').checked;
+                return { length: _length, chars: _chars, num: _num, sym: _sym };
+            }
+
+            const Generator = () => {
+
+                const GeneratePwFromValue = () =>{
+                    alert('Check Console');
+                    console.log('Generate From Values : ', GenerateNew() )
+                }
+
+                const GeneratePwFromPropsOrState = () =>{
+                    let valuesAsPropsOrState = {}; //Det är här vill jag komma åt child-component data via props/state/useState?
+                }
+                
+                return(
+                    <div>
+                        <p>Create a password<br/>Length:</p>
+                        { SelectLength() } <hr/>
+                        
+                        <p>Select:</p>
+                        { SelectTypes() } <hr />
+                        
+                        <input type={'button'} onClick={()=> GeneratePwFromValue() } value={'Generate'} />
+                    </div>
+                );
+            }
+            ReactDOM.render(<Generator />, document.querySelector('#root'));
+		</script>
+	</body>
+</html>
