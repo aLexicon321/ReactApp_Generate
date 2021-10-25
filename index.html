@@ -13,84 +13,54 @@
 
 		<script type="text/babel">
 
-            const SelectTypes = () => {
-                // Hur kan man skicka dessa props till andra parent komponenter 
+            const SelectLength = (props) => {
+                return(
+                    <div>
+                        <p>Length:</p>
+                        <input type={'number'} onChange={(e)=> props.change(e.target.value)} />
+                    </div>
+                );
+            }
+
+            const SelectTypes = (props) => {
+                return(
+                    <div>
+                        <label>Chars</label> 
+                        <input type={'checkbox'} defaultChecked={props.charChecked} onChange={(e)=> props.changeChar(e.target.checked) } />
+                    
+                        <label>Numbers</label> 
+                        <input type={'checkbox'} defaultChecked={props.numChecked} onChange={(e)=> props.changeNum(e.target.checked) } />
+                    
+                        <label>Symbols</label>
+                        <input type={'checkbox'} defaultChecked={props.symChecked} onChange={(e)=> props.changeSym(e.target.checked) } />
+                    </div>
+                ); 
+            }
+            
+            const Generator = () => {
+
+                const [lengthOfString, setLengthOfString] = React.useState();
                 const [typeChar, setTypeChar] = React.useState(true);
                 const [typeNum, setTypeNum] = React.useState(false);
                 const [typeSym, setTypeSym] = React.useState(false);
 
-                const changeChar = (e) => {
-                    let checkedState = e.target.checked;
-                    console.log('Chars : isChecked/NewState:',checkedState);
-                    setTypeChar(checkedState);
-                }
-
-                const changeNum = (e) => {
-                    let checkedState = e.target.checked;
-                    console.log('Numbers : isChecked/NewState:',checkedState);
-                    setTypeNum(checkedState);
-                }
-
-                const changeSym = (e) => {
-                    let checkedState = e.target.checked;
-                    console.log('Symbols : isChecked/NewState:',checkedState);
-                    setTypeSym(checkedState);
-                }
-
-                return(
-                    <div>
-                        <div>
-                            <label>Chars</label> 
-                            <input type={'checkbox'} id={'_char'} checked={typeChar} onChange={(e)=> changeChar(e) } />
-                        
-                            <label>Numbers</label> 
-                            <input type={'checkbox'} id={'_num'} checked={typeNum} onChange={(e)=> changeNum(e) } />
-                        
-                            <label>Symbols</label>
-                            <input type={'checkbox'} id={'_sym'} checked={typeSym} onChange={(e)=> changeSym(e) } />
-                        </div>
-                    </div>
-                ); 
-            }
-
-            const SelectLength = () => {
-                return(
-                    <div>
-                        <div> <input type={'number'} id={'_length'} /> </div>
-                    </div>
-                );
-            }
-            //- END - Child Component
-            
-            const GenerateNew = () => {
-                // Här hämtar jag värdet om jag befinner mig utanför komponenter
-                let _length = document.querySelector('#_length').value;
-                let _chars = document.querySelector('#_char').checked;
-                let _num = document.querySelector('#_num').checked;
-                let _sym = document.querySelector('#_sym').checked;
-                return { length: _length, chars: _chars, num: _num, sym: _sym };
-            }
-
-            const Generator = () => {
-
-                const GeneratePwFromValue = () =>{
-                    alert('Check Console');
-                    console.log('Generate From Values : ', GenerateNew() )
-                }
-
-                const GeneratePwFromPropsOrState = () =>{
-                    let valuesAsPropsOrState = {}; //Det är här vill jag komma åt child-component data via props/state/useState?
-                }
+                const GenerateString = () => alert('Generating...');
                 
                 return(
                     <div>
-                        <p>Create a password<br/>Length:</p>
-                        { SelectLength() } <hr/>
+                        <p>Create a password</p>
+
+                        <hr/>
+                        <SelectLength change={setLengthOfString} />
+
+                        <hr/>
+                        <SelectTypes
+                            changeChar={setTypeChar} charChecked={typeChar}
+                            changeNum={setTypeNum} numChecked={typeNum}
+                            changeSym={setTypeSym} symChecked={typeSym}
+                        />
                         
-                        <p>Select:</p>
-                        { SelectTypes() } <hr />
-                        
-                        <input type={'button'} onClick={()=> GeneratePwFromValue() } value={'Generate'} />
+                        <input type={'button'} onClick={()=> GenerateString() } value={'Generate'} />
                     </div>
                 );
             }
